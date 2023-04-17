@@ -17,6 +17,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        // Создаем UIWondow
+        let window = UIWindow(windowScene: windowScene)
+        
+        // Создаем ViewController
+        let profileViewController = ProfileViewController()
+        let feedViewController = FeedViewController()
+        
+        
+        //Создаем UINavigationController 2 штуки
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        profileNavigationController.tabBarItem.title = "Профиль"
+        profileNavigationController.tabBarItem.image = UIImage(systemName: "person")
+        
+        let feedNavigationController = UINavigationController(rootViewController: feedViewController)
+        feedNavigationController.tabBarItem.title = "Лента"
+        feedNavigationController.tabBarItem.image = UIImage(systemName: "dot.radiowaves.up.forward")
+        
+        // Создаем TabBarController и Добавляем туда навигационные контроллеры
+        let tabViewController = UITabBarController()
+        tabViewController.viewControllers = [profileNavigationController,feedNavigationController]
+        tabViewController.tabBar.backgroundColor = UIColor.gray
+        tabViewController.tabBar.tintColor = UIColor.blue
+        
+        window.rootViewController = tabViewController
+        
+        self.window = window
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
