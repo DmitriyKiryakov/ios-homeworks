@@ -29,6 +29,8 @@ class InfoViewController: UIViewController {
         postButton.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
         
     }
+    //На InfoViewController создайте кнопку. При нажатии на неё должен показаться UIAlertController с заданным title, message и двумя UIAlertAction. При нажатии на каждый UIAlertAction в консоль должно выводиться сообщение.
+    
     
     @objc func showAlert () {
         let alert = UIAlertController(title: "Я верно выполнил дз?", message: "Лучше скажите да", preferredStyle: .alert)
