@@ -9,113 +9,103 @@ import UIKit
 
 
 class ProfileHeaderView: UIView {
-    var userPhoto: UIImageView!
-    var mainLabel: UILabel!
-    var statusLabel: UILabel!
-    var changeStatusButton: UIButton!
+   
+    
+    private lazy var userPhoto = {
+        let photo = UIImageView()
+        photo.layer.borderWidth = 3
+        photo.layer.borderColor = UIColor.white.cgColor
+        photo.layer.masksToBounds = false
+        photo.layer.cornerRadius = 75
+        photo.image = UIImage(named: "кот")
+        photo.clipsToBounds = true
+        return photo
+        
+    }()
+  
+    
+    private lazy var changeStatusButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 16
+        button.isUserInteractionEnabled = true
+        button.setTitle("Show Status", for: .normal)
+        button.titleLabel?.textColor = .white
+        button.backgroundColor = .blue
+        button.layer.shadowOffset.width = 4
+        button.layer.shadowOffset.height = 4
+        button.layer.shadowRadius = 4
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.7
+        button.addTarget(self, action: #selector(self.buttonPressed), for: .touchUpInside)
+        return button
+        
+    }()
     
     
+    private lazy var  statusLabel = {
+        let label = UILabel()
+        label.text = "Waiting for something"
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 14)
+        return label
+        
+    }()
+    
+    private lazy var mainLabel = {
+    
+        let label = UILabel()
+        label.text = "Hipster Cat"
+        label.textColor = .black
+        label.font = UIFont.boldSystemFont(ofSize: 18.0)
+        return label
+        
+    }()
+    
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = .lightGray
-        setupUserPhoto()
-        setupMainLabel()
-        setupStatusLabel()
-        setupChangeStatusButton()
-        
-                
-        
-        
+        addUI()
+       // drawUI()
+      
     }
     
-//    override func viewDidLayoutSubviews(){
-//        super.viewDidLayoutSubviews()
-//
-        
-//    }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func addUI(){
+        self.addSubview(userPhoto)
+        self.addSubview(changeStatusButton)
+        self.addSubview(mainLabel)
+        self.addSubview(statusLabel)
+    }
+
+    func drawUI(){
         let xInset1: Int = 16
         let yInset2: Int = 16
         let yInset3 = 27
         let yInset4 = 34
         
-        changeStatusButton.frame = CGRect(x: 16, y: Int(userPhoto.frame.height) + 2*16, width: Int((superview?.frame.width ?? 100)-2*16), height: 50)
+        userPhoto.frame = CGRect(x: xInset1, y: xInset1, width: 150, height: 150)
+        changeStatusButton.frame = CGRect(x: xInset1, y: Int(userPhoto.frame.height) + 2*16, width: Int((superview?.frame.width ?? 100)-2*16), height: 50)
+        // @Михаил @Алексей почему когда я вместо чисел подставляю константы компилятор пишет ошибку?
+        //The compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
+        // changeStatusButton.frame = CGRect(x: xInset1, y: Int(userPhoto.frame.height) + 2*xInset1, width: Int((superview?.frame.width ?? 100)-2*xInset1), height: 50)
         mainLabel.frame = CGRect(x: Int((superview?.frame.width ?? 0))/2 , y: yInset3, width: 300, height: 50)
         statusLabel.frame = CGRect(x: mainLabel.frame.origin.x, y: changeStatusButton.frame.origin.y - 34-50, width: 300, height: 50)
-        //changeStatusButton.frame = CGRect(x: 16, y: Int(userPhoto.frame.height) + 2*yInset2, width: Int((superview?.frame.width ?? 100)-2*xInset1), height: 50)
-        // почему это строчка выдает ошибку??
-        //The compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-    }
-    
-    
-    private func setupChangeStatusButton(){
-        changeStatusButton = UIButton(frame: CGRect(x: 16, y: 250, width: 320, height: 50))
-        changeStatusButton.layer.cornerRadius = 16
-        changeStatusButton.isUserInteractionEnabled = true
-        changeStatusButton.setTitle("Show Status", for: .normal)
-        changeStatusButton.titleLabel?.textColor = .white
-        changeStatusButton.backgroundColor = .blue
-        
-        changeStatusButton.layer.shadowOffset.width = 4
-        changeStatusButton.layer.shadowOffset.height = 4
-        changeStatusButton.layer.shadowRadius = 4
-        changeStatusButton.layer.shadowColor = UIColor.black.cgColor
-        changeStatusButton.layer.shadowOpacity = 0.7
-        
-        changeStatusButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        
-        
-        
-        self.addSubview(changeStatusButton)
-        
-        
         
     }
+    
     
     @objc func buttonPressed(){
-        print(statusLabel.text)
+        print(statusLabel.text ?? "")
     }
     
-    
-    private func setupStatusLabel(){
-        statusLabel = UILabel(frame: CGRect(x: 150, y: 150, width: 300, height: 50))
-        statusLabel.text = "Waiting for something"
-        statusLabel.textColor = .gray
-        statusLabel.font = UIFont.systemFont(ofSize: 14)
-        
-        self.addSubview(statusLabel)
-    }
-    
-    
-    private func setupMainLabel() {
-        mainLabel = UILabel(frame: CGRect(x: 150, y: 27, width: 300, height: 50))
 
-        
-      //  mainLabel.backgroundColor = .systemGray
-        mainLabel.text = "Hipster Cat"
-        mainLabel.textColor = .black
-        mainLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
-        self.addSubview(mainLabel)
-        
-    }
     
-    //Настраиваем фото
-    private func setupUserPhoto(){
-        
-        userPhoto = UIImageView(frame: CGRect(x: 16, y: 16, width: 150, height: 150))
-        userPhoto.layer.borderWidth = 3
-        userPhoto.layer.borderColor = UIColor.white.cgColor
-        userPhoto.layer.masksToBounds = false
-        userPhoto.layer.cornerRadius = userPhoto.frame.height/2
-        userPhoto.image = UIImage(named: "кот")
-        userPhoto.clipsToBounds = true
-        
-        self.addSubview(userPhoto)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        drawUI()
     }
     
     required init?(coder: NSCoder) {
