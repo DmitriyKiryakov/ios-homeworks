@@ -9,10 +9,11 @@ import UIKit
 
 
 class ProfileHeaderView: UIView {
-   
+     var statusText : String = ""
     
-    private lazy var userPhoto = {
+    private lazy var avatarImageView = {
         let photo = UIImageView()
+        photo.translatesAutoresizingMaskIntoConstraints = false
         photo.layer.borderWidth = 3
         photo.layer.borderColor = UIColor.white.cgColor
         photo.layer.masksToBounds = false
@@ -24,8 +25,9 @@ class ProfileHeaderView: UIView {
     }()
   
     
-    private lazy var changeStatusButton = {
+    private lazy var setStatusButton = {
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
         button.isUserInteractionEnabled = true
         button.setTitle("Show Status", for: .normal)
@@ -44,6 +46,7 @@ class ProfileHeaderView: UIView {
     
     private lazy var  statusLabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Waiting for something"
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14)
@@ -51,15 +54,35 @@ class ProfileHeaderView: UIView {
         
     }()
     
-    private lazy var mainLabel = {
+    private lazy var fullNameLabel = {
     
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Hipster Cat"
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 18.0)
         return label
         
     }()
+    
+    // другой вариант объявления
+    private lazy var statusTextField : UITextField = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.isUserInteractionEnabled = true
+        $0.backgroundColor = .white
+        $0.layer.borderColor = UIColor.black.cgColor
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 12
+        $0.textColor = .black
+        $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        $0.textAlignment = .left
+        $0.placeholder = "Enter status..."
+        $0.addTarget(self, action: #selector(statusTextChanged(_:)), for: .editingChanged)
+        
+        
+        
+        return $0
+    }(UITextField())
     
 
     
@@ -68,37 +91,63 @@ class ProfileHeaderView: UIView {
         
         self.backgroundColor = .lightGray
         addUI()
-       // drawUI()
       
     }
     
     
     func addUI(){
-        self.addSubview(userPhoto)
-        self.addSubview(changeStatusButton)
-        self.addSubview(mainLabel)
+        self.addSubview(avatarImageView)
+        self.addSubview(setStatusButton)
+        self.addSubview(fullNameLabel)
         self.addSubview(statusLabel)
+        self.addSubview(statusTextField)
     }
 
     func drawUI(){
-        let xInset1: Int = 16
-        let yInset2: Int = 16
-        let yInset3 = 27
-        let yInset4 = 34
-        
-        userPhoto.frame = CGRect(x: xInset1, y: xInset1, width: 150, height: 150)
-        changeStatusButton.frame = CGRect(x: xInset1, y: Int(userPhoto.frame.height) + 2*16, width: Int((superview?.frame.width ?? 100)-2*16), height: 50)
-        // @Михаил @Алексей почему когда я вместо чисел подставляю константы компилятор пишет ошибку?
-        //The compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-        // changeStatusButton.frame = CGRect(x: xInset1, y: Int(userPhoto.frame.height) + 2*xInset1, width: Int((superview?.frame.width ?? 100)-2*xInset1), height: 50)
-        mainLabel.frame = CGRect(x: Int((superview?.frame.width ?? 0))/2 , y: yInset3, width: 300, height: 50)
-        statusLabel.frame = CGRect(x: mainLabel.frame.origin.x, y: changeStatusButton.frame.origin.y - 34-50, width: 300, height: 50)
+
+        NSLayoutConstraint.activate([
+            //avatar
+            avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 150),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 150),
+            //setStatusButton
+            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
+            setStatusButton.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+            setStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            setStatusButton.heightAnchor.constraint(equalToConstant: 50),
+            //fullNameLabel
+            fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
+            fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
+            fullNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            //statusLabel
+            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor,constant: -64),
+            statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
+            statusLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            //
+            statusTextField.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
+            statusTextField.trailingAnchor.constraint(equalTo: statusLabel.trailingAnchor),
+            statusTextField.heightAnchor.constraint(equalToConstant: 40),
+            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 10)
+            
+            
+        ])
         
     }
     
     
     @objc func buttonPressed(){
-        print(statusLabel.text ?? "")
+        statusLabel.text = statusText
+      
+    }
+    
+    @objc func statusTextChanged(_ textField: UITextField) {
+        
+        if let titleStatus = textField.text {
+            statusText = titleStatus
+        }
+        
+        
     }
     
 
