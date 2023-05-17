@@ -65,8 +65,8 @@ class ProfileHeaderView: UIView {
         
     }()
     
-    // другой вариант объявления
-    private lazy var statusTextField : UITextField = {
+    // другой вариант объявления оставлен тут в учебных целях чтобы не забыть что так тоже можно
+    private lazy var statusTextField : TextFieldWithPadding = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.isUserInteractionEnabled = true
         $0.backgroundColor = .white
@@ -82,7 +82,7 @@ class ProfileHeaderView: UIView {
         
         
         return $0
-    }(UITextField())
+    }(TextFieldWithPadding())
     
 
     
@@ -91,6 +91,8 @@ class ProfileHeaderView: UIView {
         
         self.backgroundColor = .lightGray
         addUI()
+        drawUI()
+        
       
     }
     
@@ -150,12 +152,6 @@ class ProfileHeaderView: UIView {
         
     }
     
-
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        drawUI()
-    }
     
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
