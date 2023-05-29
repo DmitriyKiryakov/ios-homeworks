@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         // Создаем ViewController
-        let profileViewController = ProfileViewController()
+        let profileViewController = LogInViewController()
         let feedViewController = FeedViewController()
         
         
