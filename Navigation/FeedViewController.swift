@@ -9,7 +9,7 @@ import UIKit
 
 class FeedViewController: UIViewController {
     
-    var post = Post(title: "Новость дня", text: "Текст новости")
+//    var post = Post(title: "Новость дня", text: "Текст новости")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class FeedViewController: UIViewController {
         
         navigationController?.pushViewController(postViewController, animated: true)
         // Передаем Title в заголовок
-        postViewController.changeTitle(post: post)
+     //   postViewController.changeTitle(post: post)
     }
     
     /*

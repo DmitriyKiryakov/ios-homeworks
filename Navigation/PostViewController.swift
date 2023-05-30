@@ -36,7 +36,7 @@ class PostViewController: UIViewController {
     
     // дополнительная фунция которая получает структуру пост и ставит заголовок в качестве title контроллера
     func changeTitle(post: Post) {
-        title = post.title
+        
     }
 
     /*
