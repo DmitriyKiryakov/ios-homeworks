@@ -13,8 +13,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         title = "Профиль"
         view.backgroundColor = UIColor.lightGray
-        
-        // Do any additional setup after loading the view.
+       
         layout()
         
     }
@@ -23,7 +22,7 @@ class ProfileViewController: UIViewController {
     private func layout(){
         let profileHeaderView = ProfileHeaderView()
         profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
-       // profileHeaderView.frame = view.safeAreaLayoutGuide.layoutFrame
+
         view.addSubview(profileHeaderView)
         
         NSLayoutConstraint.activate([
@@ -33,9 +32,6 @@ class ProfileViewController: UIViewController {
             profileHeaderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
-    func setupConstraint() {
-        //     let safeArea = view.safeAreaLayoutGuide.f
-        
-    }
+    
 
 }
