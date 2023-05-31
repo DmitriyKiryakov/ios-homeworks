@@ -9,9 +9,7 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
-    
     private let nc = NotificationCenter.default
-    
     private let colorSet = UIColor(red: 0x48 / 255.0, green: 0x85 / 255.0, blue: 0xCC / 255.0, alpha: 1.0)
     
     private lazy var logoImage = {
@@ -56,7 +54,6 @@ class LogInViewController: UIViewController {
         return view
     }()
     
-    
     private lazy var passwordField = {
        let textField = TextFieldWithPadding()
         textField.placeholder = "Password"
@@ -86,7 +83,6 @@ class LogInViewController: UIViewController {
         let blue_pixel = UIImage(named: "blue_pixel")
         button.setBackgroundImage(blue_pixel, for: UIControl.State.normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        
         switch button.state {
         case .normal      : button.alpha = 1
         case .selected    : button.alpha = 0.8
@@ -97,9 +93,6 @@ class LogInViewController: UIViewController {
         button.clipsToBounds = true
         return button
     }()
-    
- 
-    
     
     private lazy var scrollView = {
         let scrollView = UIScrollView()
@@ -116,7 +109,6 @@ class LogInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
         layout()
     }
     
@@ -196,19 +188,11 @@ class LogInViewController: UIViewController {
             logButton.leadingAnchor.constraint(equalTo: passwordField.leadingAnchor),
             logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.trailingAnchor.constraint(equalTo: passwordField.trailingAnchor),
-            
-            
         ])
-
-        
     }
-@objc private func buttonPressed (){
-    navigationController?.pushViewController(ProfileViewController(), animated: true)
-
-}
-    
-  
-
+    @objc private func buttonPressed (){
+        navigationController?.pushViewController(ProfileViewController(), animated: true)
+    }
 }
 
 extension LogInViewController: UITextFieldDelegate {

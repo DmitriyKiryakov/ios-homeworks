@@ -21,7 +21,6 @@ class ProfileHeaderView: UIView {
         photo.image = UIImage(named: "кот")
         photo.clipsToBounds = true
         return photo
-        
     }()
   
     
@@ -40,7 +39,6 @@ class ProfileHeaderView: UIView {
         button.layer.shadowOpacity = 0.7
         button.addTarget(self, action: #selector(self.buttonPressed), for: .touchUpInside)
         return button
-        
     }()
     
     
@@ -55,7 +53,6 @@ class ProfileHeaderView: UIView {
     }()
     
     private lazy var fullNameLabel = {
-    
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Hipster Cat"
@@ -78,28 +75,18 @@ class ProfileHeaderView: UIView {
         $0.textAlignment = .left
         $0.placeholder = "Enter status..."
         $0.addTarget(self, action: #selector(statusTextChanged(_:)), for: .editingChanged)
-        
-        
-        
         return $0
     }(TextFieldWithPadding())
     
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
-        self.backgroundColor = .lightGray
         addUI()
         drawUI()
-        
-      
     }
     
-    
     func addUI(){
-        self.addSubview(avatarImageView)
+        addSubview(avatarImageView)
         self.addSubview(setStatusButton)
         self.addSubview(fullNameLabel)
         self.addSubview(statusLabel)
@@ -119,6 +106,7 @@ class ProfileHeaderView: UIView {
             setStatusButton.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             setStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             setStatusButton.heightAnchor.constraint(equalToConstant: 50),
+            setStatusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             //fullNameLabel
             fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
@@ -132,27 +120,18 @@ class ProfileHeaderView: UIView {
             statusTextField.trailingAnchor.constraint(equalTo: statusLabel.trailingAnchor),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 10)
-            
-            
         ])
-        
     }
-    
     
     @objc func buttonPressed(){
         statusLabel.text = statusText
-      
     }
     
     @objc func statusTextChanged(_ textField: UITextField) {
-        
         if let titleStatus = textField.text {
             statusText = titleStatus
         }
-        
-        
     }
-    
     
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
