@@ -14,7 +14,10 @@ class ProfileViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        // регистрируем ячейки посты
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+        // регистрируем ячейку с фото
+        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
@@ -47,19 +50,42 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        ProfileHeaderView()
+        
+        // мы показываем наш кастомный футер с котом только для первой секции
+        if section == 0 {
+            return ProfileHeaderView()
+        } else {
+            return nil
+        }
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            navigationController?.pushViewController(PhotosViewController(), animated: true)
+        }
+    }
 }
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        wall.count
+        if section == 0 {
+           return 1
+        } else {
+           return wall.count
+        }
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //         Так вызываем кастомную ячейку:
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
-        cell.setupCell(post: wall[indexPath.row])
-        return cell
+        
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
+            cell.setupCell(post: wall[indexPath.row])
+            return cell
+        }
     }
 }
