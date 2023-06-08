@@ -1,13 +1,8 @@
-//
-//  CustomCollectionViewCell.swift
-//  Navigation
-//
-//  Created by Дмитрий Кирьяков on 07.06.2023.
-//
+
 
 import UIKit
 
-final class CustomCollectionViewCell: UICollectionViewCell {
+final class CustomCollectionViewCell2: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
@@ -23,7 +18,6 @@ final class CustomCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 15
         return imageView
     }()
     

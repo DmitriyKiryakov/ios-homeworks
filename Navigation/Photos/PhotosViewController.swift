@@ -20,7 +20,7 @@ final class PhotosViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(
-            CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+            CustomCollectionViewCell2.self, forCellWithReuseIdentifier: CustomCollectionViewCell2.identifier)
         return collectionView
     }()
 
@@ -54,7 +54,7 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     
  
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.bounds.width - (intInset * 3 + extInset*2)) / 4
+        let width = (collectionView.bounds.width - (intInset * 2 + extInset*2)) / 3
         return CGSize(width: width, height: width)
    }
     
@@ -77,7 +77,7 @@ extension PhotosViewController: UICollectionViewDataSource{
    }
    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell2.identifier, for: indexPath) as! CustomCollectionViewCell2
        cell.setupCell(img: myImages[indexPath.row])
        return cell
    }
