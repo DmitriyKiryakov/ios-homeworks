@@ -9,7 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private var wall = Post.loadWall()
+    var wall = Post.loadWall()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -34,6 +34,9 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         title = "Профиль"
         view.backgroundColor = .white
+        print("Count of wall now =\(self.wall.count)")
+
+        print("Count of wall now =\(self.wall.count)")
         layout()
     }
 
@@ -46,6 +49,13 @@ class ProfileViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
+    
+    public func addLike(row: Int){
+        print("Элементов в массиве  - \(wall.count)")
+        wall[row].likes += 1
+        print("Ячейке с номером \(row) поставили лайк и теперь там \(wall[row].likes) лайков")
+        tableView.reloadData()
+    }
 }
 
 extension ProfileViewController: UITableViewDelegate {
@@ -54,6 +64,7 @@ extension ProfileViewController: UITableViewDelegate {
         // мы показываем наш кастомный футер с котом только для первой секции
         if section == 0 {
             return ProfileHeaderView()
+         
         } else {
             return nil
         }
@@ -61,6 +72,15 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             navigationController?.pushViewController(PhotosViewController(), animated: true)
+        } else {
+            let detailVC = PostDetailView()
+            print("indexPath.section = \(indexPath.section) IndexPath.row =\(indexPath.row)")
+            wall[indexPath.row].views += 1
+            tableView.reloadData()
+            detailVC.indexCell = indexPath
+            detailVC.setupVC(post: wall[indexPath.row], index: indexPath)
+            present(detailVC, animated: true)
+//            navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 }
@@ -85,6 +105,7 @@ extension ProfileViewController: UITableViewDataSource {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
             cell.setupCell(post: wall[indexPath.row])
+            cell.cellIndex = indexPath
             return cell
         }
     }

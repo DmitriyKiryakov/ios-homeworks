@@ -189,8 +189,30 @@ class ProfileHeaderView: UIView {
     }
     
     @objc func buttonPressed(){
+        guard isTextFieldNoEmpty() else { return }
         statusLabel.text = statusText
+        
     }
+    
+    private func isTextFieldNoEmpty() -> Bool{
+      
+        guard statusTextField.text!.isEmpty == false else {
+            shakeAnimation(textField: statusTextField)
+            return false
+        }
+        return true
+    }
+    
+    private func shakeAnimation(textField: UITextField){
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: textField.center.x - 10, y: textField.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: textField.center.x + 10, y: textField.center.y))
+        textField.layer.add(animation, forKey: "position")
+    }
+
     
     @objc func tapOnAvatar(){
         

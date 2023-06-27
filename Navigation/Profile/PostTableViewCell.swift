@@ -9,6 +9,8 @@ import UIKit
 
 final class PostTableViewCell: UITableViewCell {
     
+    var cellIndex = IndexPath()
+    
     private let contentWhiteView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -52,6 +54,7 @@ final class PostTableViewCell: UITableViewCell {
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
+        label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -70,12 +73,22 @@ final class PostTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         layout()
         customizeCell()
+        addGesture()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    private func addGesture(){
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(likesTap))
+        likesLabel.addGestureRecognizer(tapGesture)
+    }
     
+    @objc func likesTap(){
+        print("Пользователь лайкнул пост на главном экране с номером = \(cellIndex.row)")
+        ProfileViewController().addLike(row: cellIndex.row)
+        
+    }
     
     // функия для предотвращения багов
     override func prepareForReuse() {
@@ -101,6 +114,7 @@ final class PostTableViewCell: UITableViewCell {
         likesLabel.text = "Likes: " + String(post.likes)
         viewsLabel.text = "Views: " + String(post.views)
     }
+
     
     private func layout() {
         [contentWhiteView,authorLabel, postImage, descriptionLabel, likesLabel, viewsLabel].forEach {contentView.addSubview($0)}
