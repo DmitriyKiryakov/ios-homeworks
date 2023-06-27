@@ -210,15 +210,15 @@ class LogInViewController: UIViewController {
         ])
     }
     @objc private func buttonPressed (){
-//        errorLabel.isHidden = true
-//        guard isTextFieldNoEmpty() else { return }
-//        guard isValidEmail(userNameField.text!) else {
-//            errorLabel.isHidden = false
-//            shakeAnimation(textField: userNameField)
-//            errorLabel.text = "В поле логин должен быть указан email"
-//            return }
-//        guard isPasswordLenghtEnough() else {return}
-//        guard isLoginAndPasswordCorrect() else {return}
+        errorLabel.isHidden = true
+        guard isTextFieldNoEmpty() else { return }
+        guard isValidEmail(userNameField.text!) else {
+            errorLabel.isHidden = false
+            shakeAnimation(textField: userNameField)
+            errorLabel.text = "В поле логин должен быть указан email"
+            return }
+        guard isPasswordLenghtEnough() else {return}
+        guard isLoginAndPasswordCorrect() else {return}
         //если все проверки прошли - запускаем следуюещий экран
         navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
