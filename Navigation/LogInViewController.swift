@@ -20,7 +20,7 @@ class LogInViewController: UIViewController {
     }()
     
     private lazy var userNameField: TextFieldWithPadding = {
-       let textField = TextFieldWithPadding()
+        let textField = TextFieldWithPadding()
         textField.placeholder = "Email or phone"
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
@@ -35,9 +35,9 @@ class LogInViewController: UIViewController {
     }()
     
     private lazy var textFieldStack: UIStackView = {
-       let stackView = UIStackView()
+        let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 1
         stackView.layer.borderColor = UIColor.lightGray.cgColor
         stackView.layer.borderWidth = 0.5
         stackView.layer.cornerRadius = 10
@@ -46,16 +46,16 @@ class LogInViewController: UIViewController {
         return stackView
     }()
     
-    // разделитель двух полей
-    private lazy var middleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray4
-        return view
-    }()
+//    // разделитель двух полей
+//    private lazy var middleView: UIView = {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.backgroundColor = .systemGray4
+//        return view
+//    }()
     
     private lazy var passwordField = {
-       let textField = TextFieldWithPadding()
+        let textField = TextFieldWithPadding()
         textField.placeholder = "Password"
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
@@ -92,6 +92,17 @@ class LogInViewController: UIViewController {
         }
         button.clipsToBounds = true
         return button
+    }()
+    
+    private lazy var errorLabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 2
+        label.textColor = .red
+        label.textAlignment = .center
+        label.isHidden = true
+        
+        return label
     }()
     
     private lazy var scrollView = {
@@ -152,11 +163,13 @@ class LogInViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(logoImage)
         contentView.addSubview(textFieldStack)
-        textFieldStack.addArrangedSubview(userNameField)
-        textFieldStack.addArrangedSubview(middleView)
-        textFieldStack.addArrangedSubview(passwordField)
+        [userNameField, passwordField].forEach { textFieldStack.addArrangedSubview($0) }
+//        textFieldStack.addArrangedSubview(userNameField)
+//        textFieldStack.addArrangedSubview(middleView)
+//        textFieldStack.addArrangedSubview(passwordField)
         contentView.addSubview(logButton)
-       
+        contentView.addSubview(errorLabel)
+        
         
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -171,33 +184,130 @@ class LogInViewController: UIViewController {
             logoImage.widthAnchor.constraint(equalToConstant: 100),
             logoImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120),
             logoImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            
+
             textFieldStack.topAnchor.constraint(equalTo: logoImage.bottomAnchor,constant: 120),
             textFieldStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 16),
             textFieldStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            userNameField.heightAnchor.constraint(equalToConstant: 50),
-            
-            middleView.heightAnchor.constraint(equalToConstant: 1),
-            middleView.topAnchor.constraint(equalTo: userNameField.bottomAnchor),
-            
-            passwordField.topAnchor.constraint(equalTo: middleView.bottomAnchor),
-            passwordField.heightAnchor.constraint(equalToConstant: 50),
-            
+//            userNameField.topAnchor.constraint(equalTo: textFieldStack.topAnchor),
+//            userNameField.heightAnchor.constraint(equalToConstant: 50),
+//
+//            middleView.heightAnchor.constraint(equalToConstant: 1),
+//            middleView.topAnchor.constraint(equalTo: textFieldStack.topAnchor,constant: 50),
+////
+//            passwordField.topAnchor.constraint(equalTo: middleView.bottomAnchor),
+//            passwordField.heightAnchor.constraint(equalToConstant: 50),
+
             logButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 16),
             logButton.leadingAnchor.constraint(equalTo: passwordField.leadingAnchor),
             logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.trailingAnchor.constraint(equalTo: passwordField.trailingAnchor),
+
+            errorLabel.topAnchor.constraint(equalTo: logButton.bottomAnchor, constant: 16),
+            errorLabel.leadingAnchor.constraint(equalTo: logButton.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: logButton.trailingAnchor),
+            errorLabel.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     @objc private func buttonPressed (){
+//        errorLabel.isHidden = true
+//        guard isTextFieldNoEmpty() else { return }
+//        guard isValidEmail(userNameField.text!) else {
+//            errorLabel.isHidden = false
+//            shakeAnimation(textField: userNameField)
+//            errorLabel.text = "В поле логин должен быть указан email"
+//            return }
+//        guard isPasswordLenghtEnough() else {return}
+//        guard isLoginAndPasswordCorrect() else {return}
+        //если все проверки прошли - запускаем следуюещий экран
         navigationController?.pushViewController(ProfileViewController(), animated: true)
+    }
+    //проверяем на на пустые поля
+    private func isTextFieldNoEmpty() -> Bool{
+        guard userNameField.text!.isEmpty == false else {
+            shakeAnimation(textField: userNameField)
+            return false
+        }
+        guard passwordField.text!.isEmpty == false else {
+            shakeAnimation(textField: passwordField)
+            return false
+        }
+        return true
+    }
+    
+    // проверяем логин на валидность (email)
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
+    // проверяем на длинну пароля
+    private func isPasswordLenghtEnough() -> Bool {
+        guard passwordField.text!.count >= 8 else {
+            shakeAnimation(textField: passwordField)
+            errorLabel.text = """
+                    Длинна пароля должна быть
+                    не менее 8 символов
+                    """
+            errorLabel.isHidden = false
+            return false
+        }
+        return true
+    }
+    
+    // проверяем логин и пароль
+    private func isLoginAndPasswordCorrect() -> Bool {
+        let user = "Dima@mail.ru"
+        let password = "Qwerty123"
+        
+        guard userNameField.text == user else {
+            showAlert(text: "Неверный логин")
+            return false
+        }
+        guard passwordField.text == password else{
+            showAlert(text: "Неверный пароль")
+            passwordField.text = ""
+            return false
+        }
+        return true
+    }
+    
+    func showAlert (text: String) {
+        let alert = UIAlertController(title: text, message: "", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Попробовать еще раз", style: .default, handler: { action in
+        }))
+        
+        self.present(alert, animated: true)
+    }
+    
+    private func shakeAnimation(textField: UITextField){
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: textField.center.x - 10, y: textField.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: textField.center.x + 10, y: textField.center.y))
+        textField.layer.add(animation, forKey: "position")
     }
 }
 
 extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        errorLabel.isHidden = true
+        guard isTextFieldNoEmpty() else { return false}
+        guard isValidEmail(userNameField.text!) else {
+            errorLabel.isHidden = false
+            shakeAnimation(textField: userNameField)
+            errorLabel.text = "В поле логин должен быть указан email"
+            return false }
+        guard isPasswordLenghtEnough() else {return false}
+        guard isLoginAndPasswordCorrect() else {return false}
         view.endEditing(true)
+        //если все проверки прошли - запускаем следуюещий экран
+        navigationController?.pushViewController(ProfileViewController(), animated: true)
         return true
     }
 }
